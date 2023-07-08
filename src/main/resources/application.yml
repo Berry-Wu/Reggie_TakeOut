@@ -7,7 +7,10 @@ spring:
       password: wzy123
       driver-class-name: com.mysql.cj.jdbc.Driver
       url: jdbc:mysql://localhost:3306/reggie?serverTimezone=UTC
-
+  redis:
+    host: 172.0.0.1
+    port: 6379
+    database: 0
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

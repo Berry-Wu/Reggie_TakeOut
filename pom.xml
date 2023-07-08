@@ -74,6 +74,13 @@
             <artifactId>commons-email</artifactId>
             <version>1.4</version>
         </dependency>
+
+        <!--导入redis依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
