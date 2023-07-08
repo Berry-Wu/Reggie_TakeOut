@@ -1,0 +1,20 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    druid:
+      username: root
+      password: wzy123
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/reggie?serverTimezone=UTC
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: assign_id
+
+reggie:
+  path: D:\IDEA\imgs\
