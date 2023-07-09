@@ -11,6 +11,9 @@ spring:
     host: localhost
     port: 6379
     database: 0
+  cache:
+    redis:
+      time-to-live: 3600000 #设置存活时间为一小时，如果不设置，则一直存活
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

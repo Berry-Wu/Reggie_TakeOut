@@ -17,6 +17,8 @@ import com.wzy.service.SetmealService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -96,6 +98,8 @@ public class SetmealController {
      * @return
      */
     @PostMapping
+    //设置allEntries为true，清空缓存名称为setmealCache的所有缓存
+    @CacheEvict(value = "setmealCache", allEntries = true)
     public R<String> save(@RequestBody SetmealDto setmealDto){
         log.info("新建套餐:{}",setmealDto.toString());
         setmealService.saveWithDish(setmealDto);
@@ -121,6 +125,7 @@ public class SetmealController {
      * @return
      */
     @DeleteMapping
+    @CacheEvict(value = "setmealCache", allEntries = true)
     public R<String> delete(@RequestParam List<Long> ids){
         log.info("删除套餐的id：{}",ids);
         setmealService.removeWithDish(ids);
@@ -134,16 +139,13 @@ public class SetmealController {
      * @return
      */
     @PostMapping("/status/{status}")
+    @CacheEvict(value = "setmealCache", allEntries = true)
     public R<String> stop(@PathVariable int status, @RequestParam List<Long> ids){
         log.info("套餐状态：{}，套餐ids：{}",status,ids);
 
         LambdaUpdateWrapper<Setmeal> luw = new LambdaUpdateWrapper<>();
         luw.in(Setmeal::getId, ids);
-        if (status==0){
-            luw.set( Setmeal::getStatus, 0);
-        }else {
-            luw.set( Setmeal::getStatus, 1);
-        }
+        luw.set(Setmeal::getStatus, status);
         setmealService.update(luw);
         return R.success("修改销售状态成功");
     }
@@ -154,6 +156,7 @@ public class SetmealController {
      * @return
      */
     @GetMapping("/list")
+    @Cacheable(value = "setmealCache",key = "#setmeal.categoryId+'_'+#setmeal.status")
     public R<List<Setmeal>> list(Setmeal setmeal){
         //条件构造器
         LambdaQueryWrapper<Setmeal> queryWrapper = new LambdaQueryWrapper<>();
@@ -164,7 +167,6 @@ public class SetmealController {
         queryWrapper.orderByDesc(Setmeal::getUpdateTime);
         List<Setmeal> setmealList = setmealService.list(queryWrapper);
         return R.success(setmealList);
-
     }
 
     /**
