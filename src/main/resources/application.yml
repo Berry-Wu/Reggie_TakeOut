@@ -37,9 +37,10 @@ spring:
 
   # redis缓存
   redis:
-    host: localhost
+    host: 192.168.186.128
     port: 6379
     database: 0
+    password: 123456
   cache:
     redis:
       time-to-live: 3600000 #设置存活时间为一小时，如果不设置，则一直存活
@@ -52,4 +53,4 @@ mybatis-plus:
       id-type: assign_id
 
 reggie:
-  path: D:\IDEA\imgs\
+  path: D:/IDEA/imgs/
