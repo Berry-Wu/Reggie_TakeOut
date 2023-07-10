@@ -5,6 +5,9 @@ import com.wzy.common.R;
 import com.wzy.entity.User;
 import com.wzy.service.UserService;
 import com.wzy.utils.MailUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -26,6 +29,7 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @Slf4j
 @RequestMapping("/user")
+@Api(tags = "用户相关接口")
 public class UserController {
 
     @Autowired
@@ -43,6 +47,7 @@ public class UserController {
      * @throws MessagingException
      */
     @PostMapping("/sendMsg")
+    @ApiOperation("发送验证接口")
     public R<String> sendMsg(@RequestBody User user, HttpSession session) throws MessagingException {
         //获取手机号/邮箱
         String phone = user.getPhone();
@@ -75,6 +80,8 @@ public class UserController {
      * @return
      */
     @PostMapping("/login")
+    @ApiOperation("用户登录接口")
+    @ApiImplicitParam(name = "map",value = "map集合接收数据",required = true)
     public R<User> login(@RequestBody Map map, HttpSession session) {
         log.info(map.toString());
         //获取邮箱
@@ -124,6 +131,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/loginout")
+    @ApiOperation("用户登出接口")
     public R<String> loginout(HttpServletRequest request) {
         request.getSession().removeAttribute("user");
         return R.success("退出成功");
